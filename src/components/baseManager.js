@@ -1,4 +1,4 @@
-export const BASEURL = '/freeloader/api/data'
+export const BASEURL = '/freeloader/api'
 
 export async function baseFetch(URL,method,data) {
     var token = localStorage.token

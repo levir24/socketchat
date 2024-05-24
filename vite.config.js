@@ -8,6 +8,17 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+  server: {
+    proxy: {
+      '/socketchat/api': {
+        target: 'http://localhost:3000'
+      },
+
+     '/freeloader/api': {
+        target: 'http://192.168.2.124:8070'
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

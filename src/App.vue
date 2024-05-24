@@ -1,6 +1,7 @@
 <script>
 
 import LoginApp from './components/LoginApp.vue'
+import NavApp from './components/NavApp.vue'
 
 
 export default {
@@ -11,12 +12,14 @@ export default {
             connected: false,
             messages: [],
             newMessage: '',
-            islogin: false
+            islogin: false,
+            version: '05.22.24'
         }
     },
 
     components: {
-        LoginApp
+        LoginApp,
+        NavApp
     },
 
     methods: {
@@ -61,42 +64,37 @@ export default {
 
 <template>
 
-    <div class="container-fluid">
-        <div class="row align-items-start">
+
+<div class="container-fluid">
+          <div class="row align-items-start">
             <div class="col-2"></div>
-            <div class="col-2 ">
-                <h3 style="padding-top: 10px;">Web Chat </h3>
-            </div>
-            <div class="col-2">
-                <h3 style="padding-top: 10px;">Version: 05.22.24 {{ version }} </h3>
-            </div>
-            <div class="col-2">
-                <h3 style="padding-top: 10px;"><a @click="islogin = !islogin">
-                        <i class="blue bi-folder-fill"></i>
-                        Login</a>
-                    <LoginApp v-if="islogin" @login="login" />
-                </h3>
-            </div>
-            <div class="col-4">
-                <h4 style="padding-top: 10px"><a @click="tableSave">
-                        <i class="red bi-file-arrow-down"></i>
-                        Save</a></h4>
+            <div class="col-2 "><h3 style="padding-top: 10px;">Web Chat </h3></div>
+            <div class="col-2"><h4 style="padding-top: 10px;">{{ version }} </h4></div>
+            <div class="col-2"><h3 style="padding-top: 10px;">{{ user }}</h3></div>
+            <div class="col-4"><h4 style="padding-top: 10px">{{ timer }}</h4></div>
+        </div>
+
+        <div class="row align-items-start">
+        <div class="col-2">     
+            <div class="card" style="background-color: lightgray">
+              <a @click="islogin = !islogin">
+                  <i class="blue bi-folder-fill"></i>
+                  Login</a> 
+                <LoginApp v-if="islogin" @login="login"/>
+              <a @click="tableSave">
+                <i class="red bi-file-arrow-down"></i>
+              Save</a>
+
             </div>
         </div>
-        <div class="row align-items-start">
-            <div class="col-10">
-                <div v-if="connected">
-                    <div v-for="message in messages" :key="message.id">
-                        <strong>{{ message.user }}:</strong> {{ message.text }}
-                    </div>
-                    <input type="text" v-model="newMessage" @keyup.enter="sendMessage"
-                        placeholder="Type your message...">
-                </div>
-                <div v-else>
-                    <p>Connecting...</p>
-                </div>
+
+        <div class="col-10">
+            <div class="card" style="background-color: lightgray">
+                <NavApp :floor="floor" :zone="zone" />
             </div>
+        </div>
         </div>
     </div>
+
 
 </template>
