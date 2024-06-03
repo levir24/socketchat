@@ -15,7 +15,7 @@ export default defineConfig({
       },
 
      '/freeloader/api': {
-        target: 'http://192.168.2.124:8070'
+        target: 'http://localhost:8070'
       }
     }
   },

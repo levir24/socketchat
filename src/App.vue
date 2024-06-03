@@ -1,5 +1,6 @@
 <script>
 
+import { BASEURL, baseFetch, baseReload } from './components/baseManager'
 import LoginApp from './components/LoginApp.vue'
 import NavApp from './components/NavApp.vue'
 
@@ -13,7 +14,10 @@ export default {
             messages: [],
             newMessage: '',
             islogin: false,
-            version: '05.22.24'
+            version: '05.22.24',
+            user: "",
+            timer: "12:00"
+        
         }
     },
 
@@ -22,43 +26,33 @@ export default {
         NavApp
     },
 
+    mounted() {
+    this.startClock()
+    },
+
     methods: {
-        login() { },
-        connectWebSocket() {
-            this.websocket = new WebSocket('ws://localhost:3000'); // Change URL to your WebSocket server
+        
+        login(user) {
+            this.user = user
+            },
 
-            this.websocket.onopen = () => {
-                this.connected = true;
-            }
+        async startClock() {
+            var servtime = await baseReload(BASEURL + `/system/time`);
+            this.servtime = parseInt(servtime.servtime);
+            setInterval(this.updtTimer, 1000);
+            },
 
-            this.websocket.onmessage = (event) => {
-                event.data.text().then(tx => {
-                    const message = JSON.parse(tx)
-                    console.log("msg ", message)
-                    this.messages.push(message);
-                })
-            }
+        updtTimer() {
+            this.servtime += 1000;
+            var now = new Date(this.servtime).getTime();
+            var ND = new Date(now).toLocaleString("en-CA", { hour12: false });
+            this.timer = ND.slice(0, 20).replace("T", " ").replace(",","");
+            },
 
-            this.websocket.onclose = () => {
-                this.connected = false;
-            }
-        },
-
-        sendMessage() {
-            if (this.newMessage.trim() !== '') {
-                const message = {
-                    user: 'You',
-                    text: this.newMessage.trim(),
-                };
-                this.messages.push(message);
-                this.websocket.send(JSON.stringify(message));
-                this.newMessage = '';
-            }
-        },
+      
     },
-    created() {
-        this.connectWebSocket();
-    },
+
+    
 }
 </script>
 
@@ -90,7 +84,7 @@ export default {
 
         <div class="col-10">
             <div class="card" style="background-color: lightgray">
-                <NavApp :floor="floor" :zone="zone" />
+                <NavApp :user="user"/>
             </div>
         </div>
         </div>

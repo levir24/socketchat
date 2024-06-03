@@ -3,22 +3,18 @@ import { BASEURL, baseFetch, baseReload } from "./baseManager"
 
 export default {
 
-  mounted() {
-    this.startClock()
-    this.reload()
-  },
-
-  name: 'My list',
+  name: 'SocketChat',
 
   data() {
         return {
             websocket: null,
             connected: false,
             messages: [],
-            newMessage: '',
-            islogin: false
+            newMessage: ''
         }
     },
+
+    props: { user: String },
 
     methods: {
         login() { },
@@ -42,10 +38,12 @@ export default {
             }
         },
 
+            
+
         sendMessage() {
             if (this.newMessage.trim() !== '') {
                 const message = {
-                    user: 'You',
+                    user: this.user,
                     text: this.newMessage.trim(),
                 };
                 this.messages.push(message);
@@ -65,18 +63,21 @@ export default {
 
 
     <main>
-       
-        <div v-if="connected">
-            <div v-for="message in messages" :key="message.id">
-                <strong>{{ message.user }}:</strong> {{ message.text }}
+       <div class="card" style="background-color: lightgray; height: 30em">
+            <div v-if="connected">
+                <div v-for="message in messages" :key="message.id">
+                    <strong>{{ message.user }}:</strong> {{ message.text }}
+                </div>
+                
             </div>
-            <input type="text" v-model="newMessage" @keyup.enter="sendMessage"
-                placeholder="Type your message...">
+            <div v-else>
+                <p>Connecting...</p>
+            </div>
+       </div> 
+       <div v-if="connected">
+        <input type="text" style="width: 100%" v-model="newMessage" @keyup.enter="sendMessage"
+                    placeholder="Type your message...">
         </div>
-        <div v-else>
-            <p>Connecting...</p>
-        </div>
-         
     </main>
 </template>
 

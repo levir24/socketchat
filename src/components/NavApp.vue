@@ -1,7 +1,6 @@
 <script>
 import Socketchat from './Socketchat.vue'
-//import Users from './UserApp.vue'
-//import Tables from './TablesApp.vue'
+import Users from './UserApp.vue'
 
 export default {
   data() {
@@ -10,12 +9,11 @@ export default {
     }
   },
   components: {
-    Socketchat
-    //Users,
-    //Tables
+    Socketchat,
+    Users
   },
   
-  //props: { floor: Object, zone: Object }
+  props: { user: String }
 
 }
 </script>
@@ -25,12 +23,10 @@ export default {
     <div className="btn-group" role="group" style="padding: 10px">
         <button type="button" className="btn btn-outline-secondary" @click="nav = 'socketchat'">Socketchat</button>
         <button type="button" className="btn btn-outline-secondary" @click="nav = 'users'">Users</button>
-        <button type="button" className="btn btn-outline-secondary" @click="nav = 'table'">Tables</button>
     </div>
 
-    <Socketchat v-if="nav === 'socketchat'" />
+    <Socketchat v-if="nav === 'socketchat'" :user="user" />
     <Users v-if="nav === 'users'" />
-    <Tables v-if="nav === 'table'" />
 
   </div>  
 </template>
