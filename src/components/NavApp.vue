@@ -13,7 +13,7 @@ export default {
     Users
   },
   
-  props: { user: String }
+  props: { user: String, remuser: String }
 
 }
 </script>
@@ -25,7 +25,7 @@ export default {
         <button type="button" className="btn btn-outline-secondary" @click="nav = 'users'">Users</button>
     </div>
 
-    <Socketchat v-if="nav === 'socketchat'" :user="user" />
+    <Socketchat v-if="nav === 'socketchat'" :user="user" :remuser ="remuser"/>
     <Users v-if="nav === 'users'" />
 
   </div>  

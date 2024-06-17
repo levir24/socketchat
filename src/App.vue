@@ -3,6 +3,8 @@
 import { BASEURL, baseFetch, baseReload } from './components/baseManager'
 import LoginApp from './components/LoginApp.vue'
 import NavApp from './components/NavApp.vue'
+import UserMenu from './components/UserMenu.vue'
+
 
 
 export default {
@@ -15,7 +17,8 @@ export default {
             newMessage: '',
             islogin: false,
             version: '05.22.24',
-            user: "",
+            user: localStorage.username,
+            remuser: "",
             timer: "12:00"
         
         }
@@ -23,7 +26,8 @@ export default {
 
     components: {
         LoginApp,
-        NavApp
+        NavApp,
+        UserMenu
     },
 
     mounted() {
@@ -34,6 +38,10 @@ export default {
         
         login(user) {
             this.user = user
+            },
+
+        setremuser(user) {
+            this.remuser = user
             },
 
         async startClock() {
@@ -75,6 +83,7 @@ export default {
                   <i class="blue bi-folder-fill"></i>
                   Login</a> 
                 <LoginApp v-if="islogin" @login="login"/>
+            <UserMenu @user="setremuser"/>
               <a @click="tableSave">
                 <i class="red bi-file-arrow-down"></i>
               Save</a>
@@ -84,7 +93,7 @@ export default {
 
         <div class="col-10">
             <div class="card" style="background-color: lightgray">
-                <NavApp :user="user"/>
+                <NavApp :user="user" :remuser="remuser"/>
             </div>
         </div>
         </div>

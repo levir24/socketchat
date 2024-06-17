@@ -14,15 +14,15 @@ export default {
         }
     },
 
-    props: { user: String },
+    props: { user: String, remuser: String},
 
     methods: {
         login() { },
         connectWebSocket() {
             this.websocket = new WebSocket('ws://localhost:3000'); // Change URL to your WebSocket server
-
             this.websocket.onopen = () => {
-                this.connected = true;
+                this.connected = true; 
+                this.websocket.send(JSON.stringify({register:true,user:this.user}));
             }
 
             this.websocket.onmessage = (event) => {
@@ -43,7 +43,8 @@ export default {
         sendMessage() {
             if (this.newMessage.trim() !== '') {
                 const message = {
-                    user: this.user,
+                    user: this.user, 
+                    remuser: this.remuser.username,
                     text: this.newMessage.trim(),
                 };
                 this.messages.push(message);
